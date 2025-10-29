@@ -1,0 +1,318 @@
+// js/script.js
+const products = [
+  {
+    id: 1,
+    name: "Strawberry Smoothie",
+    category: "Sinh tố",
+    price: 45000,
+    image: "img/product/smoothie-strawberry.png",
+    description: "Sinh tố dâu tây tươi mát, kết hợp sữa chua và đá xay mịn.",
+    volume: "400ml",
+    brand: "Tự làm",
+},
+  {
+    id: 2,
+    name: "Cold Brew",
+    category: "Cà phê",
+    price: 38000,
+    image: "img/product/cafe-coldbrew.png",
+    description: "Cà phê ủ lạnh 12 tiếng, đậm đà, ít chua.",
+    volume: "350ml",
+    brand: "Tự pha",
+  },
+  {
+    id: 3,
+    name: "Espresso",
+    category: "Cà phê",
+    price: 32000,
+    image: "img/product/cafe-espresso.png",
+    description: "Espresso nguyên chất, đậm vị, lớp crema vàng óng.",
+    volume: "30ml",
+    brand: "Tự pha",
+  },
+  {
+    id: 4,
+    name: "Trà Đào",
+    category: "Trà",
+    price: 35000,
+    image: "img/product/tea-peachtea.png",
+    description: "Trà đen kết hợp đào tươi và thạch đào dai giòn.",
+    volume: "500ml",
+    brand: "Tự pha",
+  },
+  {
+    id: 5,
+    name: "Coca-Cola",
+    category: "Có ga",
+    price: 10000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Nước ngọt có ga Coca-Cola, dung tích 330ml.",
+    volume: "330ml",
+    brand: "Coca-Cola",
+  },
+  {
+    id: 6,
+    name: "Pepsi",
+    category: "Có ga",
+    price: 10000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Nước ngọt có ga Pepsi, dung tích 330ml.",
+    volume: "330ml",
+    brand: "PepsiCo",
+  },
+  {
+    id: 7,
+    name: "Sprite",
+    category: "Có ga",
+    price: 10000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Nước ngọt có ga Sprite, vị chanh, dung tích 330ml.",
+    volume: "330ml",
+    brand: "Coca-Cola",
+  },
+  {
+    id: 8,
+    name: "Trà xanh C2",
+    category: "Trà",
+    price: 8000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Trà xanh C2, dung tích 500ml.",
+    volume: "500ml",
+    brand: "ULV",
+  },
+  {
+    id: 9,
+    name: "Red Bull",
+    category: "Nước tăng lực",
+    price: 15000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Red Bull, dung tích 250ml.",
+    volume: "250ml",
+    brand: "Red Bull",
+  },
+  {
+    id: 10,
+    name: "Aquafina",
+    category: "Không ga",
+    price: 7000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Nước tinh khiết Aquafina, dung tích 500ml.",
+    volume: "500ml",
+    brand: "PepsiCo",
+  },
+  {
+    id: 11,
+    name: "Fanta",
+    category: "Có ga",
+    price: 10000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Nước ngọt có ga Fanta, vị cam, dung tích 330ml.",
+    volume: "330ml",
+    brand: "Coca-Cola",
+  },
+  {
+    id: 12,
+    name: "Trà Ô Long",
+    category: "Trà",
+    price: 12000,
+    image: "img/product/Drawing-500x500.jpg",
+    description: "Trà Ô Long thơm ngon, dung tích 450ml.",
+    volume: "450ml",
+    brand: "THP",
+  },
+]; 
+
+// Hàm addToCart toàn cục
+function addToCart(name, price, qty = 1) {
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const existing = cart.find((i) => i.name === name);
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({ name, price, qty });
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  if (typeof renderCart === "function") renderCart();
+}
+
+// Chuyển trang
+// js/script.js – SỬA HÀM switchPage
+
+function switchPage(link, pageId) {
+  const page = document.getElementById(pageId);
+  if (!page) {
+    console.error(`Trang #${pageId} không tồn tại!`);
+    return;
+  }
+
+  document
+    .querySelectorAll(".page-section")
+    .forEach((p) => (p.style.display = "none"));
+  page.style.display = "block";
+
+  document
+    .querySelectorAll(".nav-link")
+    .forEach((l) => l.classList.remove("active"));
+  if (link) link.classList.add("active");
+
+  if (pageId === "products") initProductsPage();
+  if (pageId === "purchase") loadCart();
+  if (pageId === "donhang") showDonHangPage(); // GỌI HÀM TỪ donhang.js
+}
+
+// Khởi tạo trang sản phẩm
+function initProductsPage() {
+  renderCategories();
+  renderProducts();
+  setupSearch();
+}
+
+// Render danh mục
+function renderCategories() {
+  const list = document.querySelector(".category-list");
+  const categories = ["Tất cả", ...new Set(products.map((p) => p.category))];
+  list.innerHTML = categories
+    .map(
+      (c, i) => `
+    <li class="category-item">
+      <button class="category-btn ${
+        i === 0 ? "active" : ""
+      }" data-cat="${c}">${c}</button>
+    </li>
+  `
+    )
+    .join("");
+
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.onclick = () => {
+      document
+        .querySelectorAll(".category-btn")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const query = document.querySelector(".search-input").value.trim();
+      renderProducts(btn.dataset.cat, query);
+    };
+  });
+}
+
+// Render sản phẩm
+function renderProducts(filter = "Tất cả", search = "") {
+  const container = document.querySelector(".product-items");
+  let items = products;
+  if (filter !== "Tất cả") items = items.filter((p) => p.category === filter);
+  if (search) {
+    const q = search.toLowerCase();
+    items = items.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q)
+    );
+  }
+
+  container.innerHTML =
+    items.length === 0
+      ? `<p style="grid-column: 1/-1; text-align:center; color:#999;">Không tìm thấy sản phẩm.</p>`
+      : items
+          .map(
+            (p) => `
+      <li class="product-card" data-id="${p.id}">
+        <div class="product-thumb">
+          <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
+          <div class="thumb-circle"></div>
+        </div>
+        <div class="product-info">
+          <p class="product-title"><i class="fa-solid fa-star"></i> ${p.name} <i class="fa-solid fa-star"></i></p>
+          <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
+        </div>
+      </li>
+    `
+          )
+          .join("");
+
+  attachProductEvents();
+}
+
+// Gắn sự kiện sản phẩm
+function attachProductEvents() {
+  document.querySelectorAll(".product-card").forEach((card) => {
+    card.onclick = (e) => {
+      if (e.target.closest(".btn-buy")) return;
+      showProductDetail(parseInt(card.dataset.id));
+    };
+  });
+
+  document.querySelectorAll(".btn-buy").forEach((btn) => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      const p = products.find((x) => x.id === id);
+      addToCart(p.name, p.price, 1);
+      alert(`Đã thêm "${p.name}" vào giỏ!`);
+    };
+  });
+}
+
+function attachProductEvents() {
+  document.querySelectorAll(".product-card").forEach((card) => {
+    card.onclick = (e) => {
+      if (e.target.closest(".btn-buy")) return;
+      showProductDetail(parseInt(card.dataset.id)); // GỌI HÀM TỪ itemdetail.js
+    };
+  });
+
+  document.querySelectorAll(".btn-buy").forEach((btn) => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      const p = products.find((x) => x.id === id);
+      addToCart(p.name, p.price, 1);
+      alert(`Đã thêm "${p.name}" vào giỏ!`);
+    };
+  });
+}
+
+// Tìm kiếm
+function setupSearch() {
+  const input = document.querySelector(".search-input");
+  const btn = document.querySelector(".search-btn");
+  const search = () => {
+    const q = input.value.trim();
+    const cat =
+      document.querySelector(".category-btn.active")?.dataset.cat || "Tất cả";
+    renderProducts(cat, q);
+  };
+  btn.onclick = search;
+  input.onkeypress = (e) => e.key === "Enter" && search();
+}
+
+// // Export
+window.switchPage = switchPage;
+window.loadCart = loadCart;
+
+// === THÊM VÀO CUỐI FILE script.js ===
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   // Gắn sự kiện cho tất cả nav-link
+//   document.querySelectorAll(".nav-link").forEach((link) => {
+//     link.addEventListener("click", (e) => {
+//       e.preventDefault();
+//       const pageId = link.dataset.page;
+//       switchPage(link, pageId);
+//     });
+//   });
+// });
+
+// code chuyển qua lại giữa trang chủ, sản phẩm, ...
+function switching_page(element, id) {
+  const home_navigate = ["home", "products", "purchase", "account"];
+  home_navigate.forEach(function (content) {
+    document.getElementById(content).style.display = "none";
+  });
+  document.getElementById(id).style.display = "block";
+
+  const buttons = document.querySelectorAll(".menu-button");
+  buttons.forEach(function (button) {
+    button.classList.remove("active");
+  });
+  element.classList.add("active");
+}

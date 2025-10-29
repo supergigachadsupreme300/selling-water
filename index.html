@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drink Shop</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <link rel="stylesheet" href="css/purchase.css" />
+    <link rel="stylesheet" href="css/itemdetail.css" />
+    <link rel="stylesheet" href="css/donhang.css" />
+    <link rel="stylesheet" href="css/account.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Signika:wght@300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="font/fontawesome-free-7.1.0-web/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="site-logo">
+          <img src="img/logo.png" alt="logo" class="logo-img" />
+        </div>
+        <nav class="site-nav">
+          <a
+            href="#"
+            class="nav-link menu-button active"
+            onclick="switching_page(this,home)"
+            data-page="home"
+          >
+            <i class="fa-solid fa-house nav-icon"></i>TRANG CHỦ
+          </a>
+          <a
+            href="#"
+            class="nav-link menu-button"
+            onclick="switching_page(this,products)"
+            data-page="products"
+          >
+            <i class="fa-solid fa-martini-glass-citrus nav-icon"></i>SẢN PHẨM
+          </a>
+          <a
+            href="#"
+            class="nav-link menu-button"
+            onclick="switching_page(this,purchase)"
+            data-page="purchase"
+          >
+            <i class="fa-solid fa-cart-shopping nav-icon"></i>GIỎ HÀNG
+          </a>
+          <a
+            href="#"
+            class="nav-link menu-button"
+            onclick="switching_page(this,account)"
+            data-page="account"
+          >
+            <i class="fa-solid fa-circle-user nav-icon"></i>TÀI KHOẢN
+          </a>
+        </nav>
+      </header>
+
+      <!-- TRANG CHỦ -->
+      <div id="home" class="page-section">
+        <div class="home-content">
+          <img src="img/banner.jpg" alt="banner" class="banner-img" />
+          <pre class="home-text-1">
+            Khơi nguồn năng lượng
+            mỗi ngày với từng ngụm 
+            tươi mát
+            </pre
+          >
+          <pre class="home-text-2">
+              Từ ly sinh tố dâu ngọt ngào đến tách cà phê đậm đà, chúng 
+              tôi mang đến trải nghiệm hương vị đầy cảm hứng.
+              </pre
+          >
+          <pre class="home-text-3">
+                Chọn món yêu thích, thưởng thức 
+                theo cách riêng của bạn
+                </pre
+          >
+        </div>
+        <div class="category-section">
+          <p class="category-title">Danh mục</p>
+        </div>
+      </div>
+
+      <!-- TRANG SẢN PHẨM -->
+      <div id="products" class="page-section" style="display: none">
+        <div class="products-layout">
+          <aside class="products-sidebar">
+            <ul class="category-list"></ul>
+          </aside>
+          <main class="products-main">
+            <div class="search-box">
+              <input
+                type="text"
+                class="search-input"
+                placeholder="nhập để tìm kiếm sản phẩm..."
+                id="input-search"
+                size="30"
+                maxlength="30"
+              />
+              <button class="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+              </button>
+            </div>
+            <div class="products-grid">
+              <ul class="product-items"></ul>
+            </div>
+            <div
+              id="product-detail"
+              class="detail-container"
+              style="display: none"
+            ></div>
+          </main>
+        </div>
+      </div>
+
+      <!-- GIỎ HÀNG & THANH TOÁN -->
+      <div id="purchase" class="page-section" style="display: none">
+        <!-- GIỎ HÀNG -->
+        <div class="cart-page">
+          <h2 class="cart-heading">Giỏ hàng của bạn</h2>
+          <div class="cart-list" id="cart-items">
+            <p class="cart-empty">Giỏ hàng trống.</p>
+          </div>
+          <div class="cart-footer">
+            <div class="cart-total">
+              Tổng tiền: <strong><span id="total-price">0 VNĐ</span></strong>
+            </div>
+            <div class="cart-actions">
+              <button class="btn-checkout">Tiến hành thanh toán</button>
+              <button class="btn-continue">Tiếp tục mua sắm</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- THANH TOÁN -->
+        <div class="checkout-page" style="display: none">
+          <h2 class="checkout-heading">Xác nhận đơn hàng</h2>
+          <div class="checkout-body">
+            <div class="checkout-form">
+              <div class="delivery-group">
+                <label class="delivery-option">
+                  <input type="radio" name="delivery" value="default" checked />
+                  <span class="delivery-label">Giao đến địa chỉ mặc định</span>
+                  <div class="address-info">
+                    123 Đường Láng, P. Láng Thượng, Q. Đống Đa, Hà Nội
+                  </div>
+                </label>
+                <label class="delivery-option">
+                  <input type="radio" name="delivery" value="new" />
+                  <span class="delivery-label">Giao đến địa chỉ mới</span>
+                </label>
+              </div>
+              <div class="new-address hidden" id="new-address-form">
+                <label for="address-input">Địa chỉ giao hàng *</label>
+                <textarea
+                  id="address-input"
+                  rows="3"
+                  placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành..."
+                ></textarea>
+              </div>
+              <div class="payment-group">
+                <h3 class="group-title">Phương thức thanh toán</h3>
+                <label class="payment-option">
+                  <input type="radio" name="payment" value="cash" checked />
+                  <span class="payment-label">Tiền mặt khi nhận hàng</span>
+                </label>
+                <label class="payment-option">
+                  <input type="radio" name="payment" value="bank" />
+                  <span class="payment-label">Chuyển khoản ngân hàng</span>
+                  <div class="bank-details hidden" id="bank-info">
+                    <p><strong>Ngân hàng:</strong> Vietcombank</p>
+                    <p><strong>Chủ tài khoản:</strong> Nguyễn Văn A</p>
+                    <p><strong>Số tài khoản:</strong> 1234567890</p>
+                    <p><em>Ghi chú: [Tên KH] - [Mã đơn]</em></p>
+                  </div>
+                </label>
+                <label class="payment-option">
+                  <input type="radio" name="payment" value="online" />
+                  <span class="payment-label"
+                    >Thanh toán trực tuyến (Momo, ZaloPay)</span
+                  >
+                </label>
+              </div>
+            </div>
+            <div class="checkout-summary">
+              <div class="summary-header"><h3>Đơn hàng</h3></div>
+              <div class="summary-items" id="checkout-items">
+                <p class="cart-empty">Giỏ hàng trống.</p>
+              </div>
+              <div class="summary-footer">
+                <p class="summary-total">
+                  Tổng cộng:
+                  <strong><span id="checkout-total-price">0 VNĐ</span></strong>
+                </p>
+                <div class="summary-actions">
+                  <button class="btn-back">Quay lại giỏ hàng</button>
+                  <button class="btn-confirm">Xác nhận đặt hàng</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="donhang" class="page-section" style="display: none">
+        <div class="donhang-container">
+          <h2 class="donhang-title">Đơn hàng đã đặt thành công!</h2>
+          <div class="donhang-box">
+            <div class="donhang-summary">
+              <h3>Chi tiết đơn hàng</h3>
+              <div id="donhang-items"></div>
+              <div class="donhang-total">
+                Tổng cộng: <span id="donhang-total">0 VNĐ</span>
+              </div>
+            </div>
+
+            <div class="donhang-info">
+              <p>
+                <strong>Phương thức thanh toán:</strong>
+                <span id="donhang-payment"></span>
+              </p>
+              <p><strong>Địa chỉ giao hàng:</strong></p>
+              <p id="donhang-address"></p>
+            </div>
+
+            <div class="donhang-actions">
+              <button class="btn-tiep-tuc">Tiếp tục mua sắm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- TÀI KHOẢN -->
+      <div id="account" class="page-section" style="display: none">
+        <div class="account-holder">
+          <h1 class="account-header">TÀI KHOẢN</h1>
+          <div class="user-container">
+            <!-- <i class="fa-solid fa-user user"></i> -->
+            <i class="fa-regular fa-user user-icon"></i>
+          </div>
+          <form name="taikhoan" class="account-form">
+            <div class="account-left">
+              <div class="form-id form">
+                <label class="label">Họ và tên</label>
+                <input
+                  type="text"
+                  size="30"
+                  maxlength="50"
+                  placeholder="Nhập họ và tên..."
+                  name="customer-name"
+                  id="customer-name"
+                  class="customer-box"
+                />
+
+                <br />
+                <br />
+                <br />
+
+                <label class="label">Số điện thoại</label>
+                <input
+                  type="text"
+                  size="30"
+                  maxlength="10"
+                  placeholder="Nhập số điện thoại..."
+                  name="customer-phone"
+                  id="customer-phone"
+                  class="customer-box"
+                />
+
+                <br />
+                <br />
+                <br />
+
+                <label class="label">Tháng/ngày/năm sinh</label>
+                <input
+                  type="date"
+                  size="30"
+                  maxlength="10"
+                  name="customer-dateOfBirth"
+                  id="customer-DOB"
+                  class="customer-box"
+                />
+              </div>
+            </div>
+            <div class="account-right">
+              <div class="form-id form">
+                <label class="label">Tên đăng nhập</label>
+                <input
+                  type="text"
+                  size="30"
+                  maxlength="20"
+                  placeholder="Nhập tên đăng nhập..."
+                  name="customer-user-name"
+                  id="customer-user-name"
+                  class="customer-box"
+                />
+
+                <br />
+                <br />
+                <br />
+
+                <label class="label">Email</label>
+                <input
+                  type="email"
+                  size="30"
+                  maxlength="30"
+                  placeholder="nhập email..."
+                  name="customer-email"
+                  id="customer-email"
+                  class="customer-box"
+                />
+
+                <br />
+                <br />
+                <br />
+
+                <label class="label">Địa chỉ</label>
+                <input
+                  type="text"
+                  size="30"
+                  maxlength="100"
+                  placeholder="Nhập địa chỉ..."
+                  name="customer-address"
+                  id="customer-address"
+                  class="customer-box"
+                />
+              </div>
+            </div>
+            <div class="submit-button-holder">
+              <button
+                type="button"
+                class="submit-button"
+                onclick="luuDuLieu(); hienThiDuLieu();"
+              >
+                Lưu thông tin
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <footer class="site-footer"></footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/cart.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/itemdetail.js"></script>
+    <!-- THÊM LẠI -->
+    <script src="js/purchase.js"></script>
+    <script src="js/donhang.js"></script>
+    <script src="js/account.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof switchPage === "function") {
+          const homeLink = document.querySelector(
+            '.nav-link[data-page="home"]'
+          );
+          switchPage(homeLink, "home");
+        }
+
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const pageId = link.dataset.page;
+            switchPage(link, pageId);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

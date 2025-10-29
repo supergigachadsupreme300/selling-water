@@ -1,0 +1,106 @@
+.account-holder {
+  width: 1420px;
+  height: 850px;
+  background-color: #fff2dd;
+  margin-left: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  box-shadow: 9px 9px 0px #b1a8a8;
+  position: relative;
+}
+
+.account-header {
+  font-family: "Signika", sans-serif;
+  font-size: 36px;
+  position: absolute;
+  top: 25px;
+  left: 50px;
+}
+
+.user-container {
+  z-index: 1;
+  height: 125px;
+  width: 125px;
+  border: solid 2px black;
+  border-radius: 50%;
+  position: absolute;
+  position: relative;
+  top: 100px;
+  left: 43%;
+  background-color: #ffdada;
+}
+
+.user-icon {
+  font-size: 95px;
+  position: absolute;
+  top: 10px;
+  left: 3px;
+}
+
+.account-form {
+  width: 1270px;
+  height: 550px;
+  background-color: white;
+  border: solid 2px black;
+  position: absolute;
+  bottom: 130px;
+  left: 70px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 0px;
+}
+
+.account-left {
+  width: 40%;
+  padding-left: 200px;
+}
+.account-right {
+  width: 40%;
+  padding-left: 50px;
+}
+
+.form {
+  margin-top: 100px;
+}
+
+.form-id {
+  width: 45%;
+  height: 40px;
+}
+
+.customer-box {
+  background-color: #f5f4f4;
+  outline: none;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.label {
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+
+.customer-box {
+  font-family: "Signika", sans-serif;
+  font-size: 15px;
+}
+
+.submit-button-holder {
+  margin-top: 200px;
+  margin-left: 43%;
+}
+
+.submit-button {
+  height: 50px;
+  width: 130px;
+  border: solid 1px black;
+  background-color: #f8f685;
+  font-family: "Signika", sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+}
