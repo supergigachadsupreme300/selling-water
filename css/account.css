@@ -46,7 +46,8 @@
   position: absolute;
   bottom: 130px;
   left: 70px;
-  display: flex;
+  display: none;
+
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: start;
@@ -102,9 +103,116 @@
   font-weight: bold;
 }
 
+/* register form */
+.register-form {
+  width: 1270px;
+  height: 550px;
+  background-color: white;
+  border: solid 2px black;
+  position: absolute;
+  bottom: 130px;
+  left: 70px;
+  display: block;
+}
+
+.register-header {
+  font-family: "Signika", sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 45px;
+}
+
+.register-label {
+  margin-left: 350px;
+  font-size: 25px;
+}
+
+.register-input {
+  margin-left: 10px;
+  height: 30px;
+  width: 200px;
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+
+#register-matkhau {
+  margin-left: 400px;
+}
+
+.register-submit {
+  margin-left: 470px;
+  height: 50px;
+  width: 100px;
+  background-color: #f8f685;
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+
+.register-reset {
+  margin-left: 10px;
+  height: 50px;
+  width: 100px;
+  background-color: #f8f685;
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+
+/* Login form */
+.login-form {
+  width: 1270px;
+  height: 550px;
+  background-color: white;
+  border: solid 2px black;
+  position: absolute;
+  bottom: 130px;
+  left: 70px;
+  display: none;
+}
+
+.login-header {
+  font-family: "Signika", sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 45px;
+}
+
+.login-label {
+  margin-left: 350px;
+  font-size: 25px;
+}
+
+.login-input {
+  margin-left: 10px;
+  height: 30px;
+  width: 200px;
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+#login-matkhau {
+  margin-left: 390px;
+}
+
+.login-submit {
+  margin-left: 450px;
+  height: 50px;
+  width: 120px;
+  background-color: #f8f685;
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+
+.login-reset {
+  margin-left: 10px;
+  height: 50px;
+  width: 100px;
+  background-color: #f8f685;
+  font-family: "Signika", sans-serif;
+  font-size: 20px;
+}
+
 /* ========================================
-   RESPONSIVE - THÊM VÀO CUỐI FILE account.css
-   ======================================== */
+RESPONSIVE - THÊM VÀO CUỐI FILE account.css
+======================================== */
 
 @media (max-width: 992px) {
   .account-holder {

@@ -252,7 +252,114 @@
             <i class="fa-solid fa-user user-icon"></i>
             <!-- <i class="fa-regular fa-user user-icon"></i> -->
           </div>
-          <form name="taikhoan" class="account-form">
+
+          <form name="dangKy" class="register-form" id="registerForm">
+            <p class="register-header">ĐĂNG KÝ</p>
+
+            <br />
+
+            <lable class="register-label">Tên đăng nhập</lable>
+            <input
+              type="text"
+              size="20"
+              maxlength="30"
+              class="register-input"
+              id="registerInput"
+              required
+            />
+
+            <br />
+            <br />
+
+            <label class="register-label" id="register-matkhau">Mật khẩu</label>
+            <input
+              type="password"
+              size="20"
+              maxlength="30"
+              class="register-input"
+              id="password"
+              required
+            />
+
+            <br />
+            <br />
+
+            <label class="register-label">Nhập lại mật khẩu</label>
+            <input
+              type="password"
+              size="20"
+              maxlength="30"
+              class="register-input"
+              id="repeatedPassword"
+              required
+            />
+
+            <br />
+            <br />
+
+            <p class="register-label">
+              Nếu đã có tài khoản?
+              <a href="#" class="hienThiDangNhap" onclick="switchToLogin()"
+                >Đăng Nhập</a
+              >
+            </p>
+
+            <br />
+            <br />
+
+            <button class="register-submit" onclick="registerToLogin(event)">
+              Đăng ký
+            </button>
+            <button type="reset" class="register-reset">Reset</button>
+          </form>
+
+          <form name="dangNhap" class="login-form" id="loginForm">
+            <p class="login-header">ĐĂNG NHẬP</p>
+
+            <br />
+
+            <label class="login-label">Tên đăng nhập</label>
+            <input
+              class="login-input"
+              id="loginUserName"
+              type="text"
+              size="20"
+              maxlength="30"
+              required
+            />
+
+            <br />
+            <br />
+            <br />
+
+            <label class="login-label" id="login-matkhau">Mật khẩu</label>
+            <input
+              type="password"
+              id="loginPassword"
+              class="login-input"
+              size="20"
+              maxlength="30"
+              required
+            />
+
+            <br />
+            <br />
+
+            <p class="login-label">
+              Chưa có tài khoản?
+              <a href="#" class="hienThiDangKy" onclick="switchToRegister()"
+                >Đăng ký</a
+              >
+            </p>
+
+            <br />
+            <br />
+
+            <button class="login-submit" onclick="Login()">Đăng nhập</button>
+            <button type="reset" class="login-reset">Reset</button>
+          </form>
+
+          <form name="taikhoan" class="account-form" id="accountForm">
             <div class="account-left">
               <div class="form-id form">
                 <label class="label">Họ và tên</label>
@@ -264,6 +371,7 @@
                   name="customer-name"
                   id="customer-name"
                   class="customer-box"
+                  required
                 />
 
                 <br />
@@ -279,6 +387,7 @@
                   name="customer-phone"
                   id="customer-phone"
                   class="customer-box"
+                  required
                 />
 
                 <br />
@@ -293,6 +402,7 @@
                   name="customer-dateOfBirth"
                   id="customer-DOB"
                   class="customer-box"
+                  required
                 />
               </div>
             </div>
@@ -307,6 +417,7 @@
                   name="customer-user-name"
                   id="customer-user-name"
                   class="customer-box"
+                  required
                 />
 
                 <br />
@@ -322,6 +433,7 @@
                   name="customer-email"
                   id="customer-email"
                   class="customer-box"
+                  required
                 />
 
                 <br />
@@ -337,6 +449,7 @@
                   name="customer-address"
                   id="customer-address"
                   class="customer-box"
+                  required
                 />
               </div>
             </div>
