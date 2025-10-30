@@ -139,7 +139,6 @@ function addToCart(name, price, qty = 1) {
 // js/script.js – SỬA HÀM switchPage
 
 
-
 // // Export
 window.switchPage = switchPage;
 window.loadCart = loadCart;
