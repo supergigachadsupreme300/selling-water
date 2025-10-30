@@ -160,26 +160,6 @@ function switchPage(link, pageId) {
   if (pageId === "donhang") showDonHangPage(); // GỌI HÀM TỪ donhang.js
 }
 
-
-function attachProductEvents() {
-  document.querySelectorAll(".product-card").forEach((card) => {
-    card.onclick = (e) => {
-      if (e.target.closest(".btn-buy")) return;
-      showProductDetail(parseInt(card.dataset.id)); // GỌI HÀM TỪ itemdetail.js
-    };
-  });
-
-  document.querySelectorAll(".btn-buy").forEach((btn) => {
-    btn.onclick = (e) => {
-      e.stopPropagation();
-      const id = parseInt(btn.dataset.id);
-      const p = products.find((x) => x.id === id);
-      addToCart(p.name, p.price, 1);
-      alert(`Đã thêm "${p.name}" vào giỏ!`);
-    };
-  });
-}
-
 // // Export
 window.switchPage = switchPage;
 window.loadCart = loadCart;
