@@ -2,9 +2,7 @@
 function initProductsPage() {
   renderCategories();
   renderProducts();
-  if (typeof setupSearch === "function") {
-    setupSearch(); // Gọi từ search.js
-  }
+  setupSearch();
 }
 
 // Render danh mục
