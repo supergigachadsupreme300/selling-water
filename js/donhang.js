@@ -37,8 +37,3 @@ function showDonHangPage() {
 }
 
 // Tự động chạy khi vào trang donhang
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('donhang')) {
-    showDonHangPage();
-  }
-});
