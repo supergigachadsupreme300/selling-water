@@ -1,13 +1,13 @@
 .account-holder {
-  width: 1420px;
-  height: 850px;
+  max-width: 1420px;
+  width: 95%;
+  min-height: 850px;
   background-color: #fff2dd;
-  margin-left: 15px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px auto;
   border-radius: 20px;
   box-shadow: 9px 9px 0px #b1a8a8;
   position: relative;
+  padding: 20px;
 }
 
 .account-header {
