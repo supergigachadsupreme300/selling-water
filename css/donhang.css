@@ -102,3 +102,22 @@
 .btn-tiep-tuc:hover {
   background: #2980b9;
 }
+
+/* ========================================
+   RESPONSIVE - THÊM VÀO CUỐI FILE donhang.css
+   ======================================== */
+
+@media (max-width: 768px) {
+  .donhang-container { margin: 20px auto; padding: 15px; }
+  .donhang-title { font-size: 24px; }
+  .donhang-box { padding: 15px; }
+  #donhang-items > div { flex-direction: column; align-items: flex-start; gap: 5px; }
+  .donhang-total { font-size: 17px; }
+  .btn-tiep-tuc { width: 100%; padding: 14px; }
+}
+
+@media (max-width: 480px) {
+  .donhang-title { font-size: 20px; }
+  #donhang-items { font-size: 14px; }
+  #donhang-address { font-size: 13px; padding: 10px; }
+}

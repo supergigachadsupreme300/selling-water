@@ -104,3 +104,34 @@
   font-size: 15px;
   font-weight: bold;
 }
+
+
+/* ========================================
+   RESPONSIVE - THÊM VÀO CUỐI FILE account.css
+   ======================================== */
+
+@media (max-width: 992px) {
+  .account-holder {
+    width: 95%; height: auto; margin: 20px auto; padding: 20px;
+  }
+  .account-header { font-size: 28px; left: 20px; top: 15px; }
+  .user-container {
+    width: 100px; height: 100px; left: 50%; transform: translateX(-50%); top: 80px;
+  }
+  .user-icon { font-size: 70px; }
+  .account-form {
+    width: 100%; left: 0; bottom: 0; flex-direction: column; padding: 20px; gap: 20px;
+  }
+  .account-left, .account-right { width: 100%; padding: 0; }
+  .form { margin-top: 20px; }
+  .submit-button-holder { margin: 30px auto 0; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .account-header { font-size: 24px; }
+  .user-container { width: 80px; height: 80px; }
+  .user-icon { font-size: 55px; }
+  .label { font-size: 16px; }
+  .customer-box { font-size: 14px; height: 35px; }
+  .submit-button { width: 100px; height: 45px; font-size: 14px; }
+}

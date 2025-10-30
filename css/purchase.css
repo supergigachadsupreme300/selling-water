@@ -288,3 +288,23 @@
 .btn-confirm:hover {
   background: #219653;
 }
+
+/* ========================================
+   RESPONSIVE - THÊM VÀO CUỐI FILE purchase.css
+   ======================================== */
+
+@media (max-width: 768px) {
+  .checkout-page { margin: 20px auto; padding: 15px; min-height: auto; }
+  .checkout-body { flex-direction: column; padding: 0 15px 20px; gap: 20px; }
+  .checkout-form, .checkout-summary { width: 100%; min-width: auto; }
+  .summary-actions, .summary-actions { flex-direction: column; }
+  .btn-back, .btn-confirm { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .checkout-heading { font-size: 24px; padding: 15px 0; }
+  .group-title { font-size: 16px; }
+  .delivery-option, .payment-option { padding: 12px; }
+  .summary-total { font-size: 16px; }
+  .summary-total strong { font-size: 18px; }
+}

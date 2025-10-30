@@ -323,3 +323,56 @@ pre {
 .btn-buy:hover {
   background-color: #e0e050;
 }
+
+/* ========================================
+   RESPONSIVE - THÊM VÀO CUỐI FILE style.css
+   ======================================== */
+
+@media (max-width: 1200px) {
+  .site-header { flex-direction: column; height: auto; padding: 10px 0; }
+  .site-logo { margin: 10px auto; }
+  .site-nav { width: 90%; margin: 0 auto; flex-wrap: wrap; padding: 10px 0; justify-content: center; }
+  .nav-link { font-size: 20px; padding: 8px 12px; }
+
+  .home-content, .category-section, .products-layout {
+    width: 95%; margin: 15px auto; border-radius: 15px;
+  }
+
+  .banner-img { width: 300px; height: auto; right: 20px; top: 120px; }
+  .home-text-1 { font-size: 48px; left: 20px; top: 40px; }
+  .home-text-2 { font-size: 20px; left: 20px; top: 280px; }
+  .home-text-3 { font-size: 28px; bottom: 100px; left: 20px; }
+}
+
+@media (max-width: 992px) {
+  .products-layout { flex-direction: column; }
+  .products-sidebar { width: 100%; order: 2; }
+  .products-main { order: 1; }
+  .search-box { width: 100%; }
+  .product-items { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+}
+
+@media (max-width: 768px) {
+  .site-nav { flex-direction: column; gap: 10px; }
+  .nav-link { font-size: 18px; padding: 10px; width: 80%; text-align: center; }
+
+  .home-text-1 { font-size: 36px; left: 10px; }
+  .home-text-2 { font-size: 18px; top: 240px; left: 10px; }
+  .home-text-3 { font-size: 24px; bottom: 80px; }
+
+  .banner-img { position: static; margin: 20px auto; display: block; width: 80%; max-width: 350px; }
+
+  .product-card { height: 280px; }
+  .product-thumb img { max-width: 120px; }
+  .product-title { font-size: 20px; }
+  .btn-buy { width: 100px; height: 40px; font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+  .site-logo, .logo-img { width: 80px; height: 80px; }
+  .home-text-1 { font-size: 28px; }
+  .home-text-2 { font-size: 16px; }
+  .home-text-3 { font-size: 20px; }
+  .category-title { font-size: 24px; }
+  .product-items { grid-template-columns: 1fr; }
+}

@@ -166,3 +166,24 @@
 .hidden {
   display: none !important;
 }
+
+/* ========================================
+   RESPONSIVE - THÊM VÀO CUỐI FILE cart.css
+   ======================================== */
+
+@media (max-width: 768px) {
+  .cart-page { margin: 20px auto; padding: 20px; }
+  .cart-row {
+    flex-direction: column; align-items: flex-start; gap: 10px; padding: 15px;
+  }
+  .item-name, .item-price { width: 100%; font-size: 15px; text-align: left; }
+  .qty-control { width: 100%; justify-content: flex-start; }
+  .remove-btn { position: absolute; top: 10px; right: 10px; }
+  .cart-actions { flex-direction: column; }
+  .btn-checkout, .btn-continue { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .cart-heading { font-size: 24px; }
+  .cart-total { font-size: 18px; }
+}

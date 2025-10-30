@@ -142,3 +142,22 @@
 .btn-add-cart:hover {
   background-color: #1d4ed8;
 }
+
+/* ========================================
+   RESPONSIVE - THÊM VÀO CUỐI FILE itemdetail.css
+   ======================================== */
+
+@media (max-width: 768px) {
+  .detail-card { padding: 1rem; border: 6px solid yellow; flex-direction: column; }
+  .detail-img { width: 100%; max-height: 300px; }
+  .detail-actions { flex-direction: column; }
+  .qty-group { width: 100%; justify-content: center; }
+  .btn-add-cart { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .detail-title { font-size: 1.5rem; }
+  .detail-price { font-size: 1.4rem; }
+  .qty-input { width: 50px; }
+  .btn-back-list { width: 100%; text-align: center; }
+}
