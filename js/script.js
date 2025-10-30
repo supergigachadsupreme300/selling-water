@@ -138,6 +138,27 @@ function addToCart(name, price, qty = 1) {
 // Chuyển trang
 // js/script.js – SỬA HÀM switchPage
 
+function switchPage(link, pageId) {
+  const page = document.getElementById(pageId);
+  if (!page) {
+    console.error(`Trang #${pageId} không tồn tại!`);
+    return;
+  }
+
+  document
+    .querySelectorAll(".page-section")
+    .forEach((p) => (p.style.display = "none"));
+  page.style.display = "block";
+
+  document
+    .querySelectorAll(".nav-link")
+    .forEach((l) => l.classList.remove("active"));
+  if (link) link.classList.add("active");
+
+  if (pageId === "products") initProductsPage();
+  if (pageId === "purchase") loadCart();
+  if (pageId === "donhang") showDonHangPage(); // GỌI HÀM TỪ donhang.js
+}
 
 // // Export
 window.switchPage = switchPage;
