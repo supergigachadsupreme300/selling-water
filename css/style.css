@@ -93,6 +93,9 @@ body {
   display: block;
   margin: 30px auto 0;
   object-fit: cover;
+  position: absolute;
+  right: 50px;
+  top: 90px;
 }
 
 pre {
