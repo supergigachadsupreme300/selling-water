@@ -22,7 +22,7 @@ const products = [
   },
   {
     id: 3,
-    name: "Espresso",
+    name: "nigga pee",
     category: "Cà phê",
     price: 32000,
     image: "img/product/cafe-espresso.png",
