@@ -94,3 +94,15 @@ window.onload = function () {
   document.getElementById("customer-email").value = data.email;
   document.getElementById("customer-address").value = data.address;
 };
+
+function updateAfterLogin() {
+  if ((document.getElementById("accountForm").style.display = "none")) {
+    alert("Hãy đăng nhập trước khi mua hàng nhé!");
+    // hãy chuyển qua trang tài khoản ở đây
+    //
+
+    //
+  } else {
+    return;
+  }
+}
