@@ -54,9 +54,10 @@ document.querySelector(".btn-confirm").onclick = () => {
     return;
   }
 
+  const userData = JSON.parse(localStorage.getItem("thongTinKhachHang")) || {};
   const address = delivery === "new" 
-    ? document.getElementById("address-input").value 
-    : "123 Đường Láng, P. Láng Thượng, Q. Đống Đa, Hà Nội";
+  ? document.getElementById("address-input").value 
+  : (userData.address || "Chưa có địa chỉ mặc định");
 
   const paymentText = { cash: "Tiền mặt", bank: "Chuyển khoản", online: "Trực tuyến" }[payment];
 
@@ -80,6 +81,7 @@ document.querySelector(".btn-checkout").onclick = function () {
   if (cart.length === 0) { alert("Giỏ hàng trống!"); return; }
   document.querySelector(".cart-page").style.display = "none";
   document.querySelector(".checkout-page").style.display = "flex";
+  updateDefaultAddress();
   renderCheckoutSummary();
 };
 
@@ -90,3 +92,11 @@ document.querySelector(".btn-back").onclick = function () {
 };
 
 document.addEventListener("DOMContentLoaded", renderCheckoutSummary);
+
+function updateDefaultAddress() {
+  const data = JSON.parse(localStorage.getItem("thongTinKhachHang"));
+  const defaultAddrEl = document.getElementById("default-address");
+  if (defaultAddrEl) {
+    defaultAddrEl.textContent = data?.address ? data.address : "Vui lòng nhập địa chỉ trong phần Tài khoản.";
+  }
+}
