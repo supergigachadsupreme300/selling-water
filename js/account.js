@@ -66,6 +66,8 @@ function luuDuLieu() {
     address: document.getElementById("customer-address").value,
   };
 
+  alert("Lưu dữ liệu thành công!");
+
   // lưu vào localStorage: kho lưu trữ cục bộ
   localStorage.setItem("thongTinKhachHang", JSON.stringify(data));
 }
