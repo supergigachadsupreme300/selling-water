@@ -115,3 +115,142 @@ function setupSearch() {
 
 // Export hàm để dùng ở nơi khác
 window.setupSearch = setupSearch;
+
+// ==================== THÊM MỚI: TÌM KIẾM NÂNG CAO (CUỐI search.js) ====================
+// ==================== CẬP NHẬT: TÌM KIẾM NÂNG CAO HIỂN THỊ NGAY KHI NHẤN ====================
+
+// Hàm tính khoảng cách Levenshtein (fuzzy search)
+function levenshteinDistance(a, b) {
+  const matrix = Array(b.length + 1).fill().map(() => Array(a.length + 1).fill(0));
+  for (let i = 0; i <= b.length; i++) matrix[i][0] = i;
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+function fuzzyMatch(query, text) {
+  if (!query || !text) return false;
+  const q = query.toLowerCase().trim();
+  const t = text.toLowerCase().trim();
+  if (t.includes(q)) return true;
+  return levenshteinDistance(q, t) <= 2;
+}
+
+// Hàm lọc nâng cao
+function applyAdvancedFilters(items, filters) {
+  let filtered = [...items];
+
+  if (filters.search) {
+    filtered = filtered.filter(p =>
+      fuzzyMatch(filters.search, p.name) ||
+      fuzzyMatch(filters.search, p.description)
+    );
+  }
+
+  if (filters.brand) {
+    filtered = filtered.filter(p => fuzzyMatch(filters.brand, p.brand));
+  }
+
+  if (filters.minPrice > 0) {
+    filtered = filtered.filter(p => p.price >= filters.minPrice);
+  }
+
+  if (filters.maxPrice < Infinity) {
+    filtered = filtered.filter(p => p.price <= filters.maxPrice);
+  }
+
+  if (filters.volume) {
+    filtered = filtered.filter(p => fuzzyMatch(filters.volume, p.volume));
+  }
+
+  return filtered;
+}
+
+// Khởi tạo tìm kiếm nâng cao
+function initAdvancedSearch() {
+  const toggleBtn = document.querySelector('.advanced-toggle-btn');
+  const advancedBox = document.querySelector('.advanced-search-box');
+  const applyBtn = document.querySelector('.apply-advanced');
+  const clearBtn = document.querySelector('.clear-advanced');
+
+  if (!toggleBtn || !advancedBox) return;
+
+  // Nhấn "+ Nâng cao" → mở toàn bộ form ngay
+  toggleBtn.onclick = () => {
+    const isHidden = advancedBox.style.display === 'none';
+    advancedBox.style.display = isHidden ? 'block' : 'none';
+    toggleBtn.textContent = isHidden ? '− Thu gọn' : '+ Nâng cao';
+  };
+
+  // Áp dụng bộ lọc
+  if (applyBtn) {
+    applyBtn.onclick = () => {
+      const search = document.querySelector('.search-input').value.trim();
+      const cat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
+      const brand = document.getElementById('brand-input').value.trim();
+      const minPrice = parseInt(document.getElementById('min-price').value) || 0;
+      const maxPrice = parseInt(document.getElementById('max-price').value) || Infinity;
+      const volume = document.getElementById('volume-input').value.trim();
+
+      let items = cat === 'Tất cả' ? products : products.filter(p => p.category === cat);
+      items = applyAdvancedFilters(items, { search, brand, minPrice, maxPrice, volume });
+
+      const container = document.querySelector('.product-items');
+      if (items.length === 0) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#999; padding: 20px;">Không tìm thấy sản phẩm nào phù hợp.</p>`;
+      } else {
+        container.innerHTML = items.map(p => `
+          <li class="product-card" data-id="${p.id}">
+            <div class="product-thumb">
+              <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
+              <div class="thumb-circle"></div>
+            </div>
+            <div class="product-info">
+              <p class="product-title"><i class="fa-solid fa-star"></i> ${p.name} <i class="fa-solid fa-star"></i></p>
+              <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
+            </div>
+          </li>
+        `).join('');
+        attachProductEvents();
+      }
+    };
+  }
+
+  // Xóa bộ lọc
+  if (clearBtn) {
+    clearBtn.onclick = () => {
+      document.getElementById('brand-input').value = '';
+      document.getElementById('min-price').value = '';
+      document.getElementById('max-price').value = '';
+      document.getElementById('volume-input').value = '';
+      const activeCat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
+      const search = document.querySelector('.search-input').value.trim();
+      renderProducts(activeCat, search);
+    };
+  }
+}
+
+// Tích hợp vào initProductsPage
+if (typeof initProductsPage === 'function') {
+  const originalInit = initProductsPage;
+  initProductsPage = function() {
+    originalInit();
+    initAdvancedSearch();
+  };
+}
+
+window.initAdvancedSearch = initAdvancedSearch;
+
+// ==================== KẾT THÚC CẬP NHẬT ====================

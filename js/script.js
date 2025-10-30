@@ -163,18 +163,3 @@ function switchPage(link, pageId) {
 // // Export
 window.switchPage = switchPage;
 window.loadCart = loadCart;
-
-// code chuyển qua lại giữa trang chủ, sản phẩm, ...
-function switching_page(element, id) {
-  const home_navigate = ["home", "products", "purchase", "account"];
-  home_navigate.forEach(function (content) {
-    document.getElementById(content).style.display = "none";
-  });
-  document.getElementById(id).style.display = "block";
-
-  const buttons = document.querySelectorAll(".menu-button");
-  buttons.forEach(function (button) {
-    button.classList.remove("active");
-  });
-  element.classList.add("active");
-}

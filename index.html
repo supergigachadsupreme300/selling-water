@@ -115,7 +115,40 @@
               <button class="search-btn">
                 <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
               </button>
+              <button class="advanced-toggle-btn" style="outline: none; border: none; background: white; font-size: 16px; color: #2563eb; cursor: pointer; padding: 0 15px; font-weight: 600;">\
+                + Nâng cao
+              </button>
             </div>
+            <!-- THAY THẾ HOÀN TOÀN PHẦN HTML BẠN ĐÃ THÊM TRƯỚC ĐÓ -->
+            <div class="advanced-search-box" style="display: none;">
+              <div style="background-color: #ffffff; border-radius: 10px; box-shadow: 7px 7px 0px #929292; margin-bottom: 20px; padding: 15px;">
+                <div class="advanced-filters" style="display: block;">
+                  <div class="filter-group" style="margin-bottom: 12px;">
+                    <label for="brand-input" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px;">Thương hiệu:</label>
+                    <input type="text" id="brand-input" placeholder="VD: Coca-Cola, PepsiCo" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                  </div>
+                  <div class="filter-group" style="display: flex; gap: 10px; margin-bottom: 12px;">
+                    <div style="flex: 1;">
+                      <label for="min-price" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px;">Giá từ:</label>
+                      <input type="number" id="min-price" min="0" placeholder="0" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                    </div>
+                    <div style="flex: 1;">
+                      <label for="max-price" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px;">Đến:</label>
+                      <input type="number" id="max-price" min="0" placeholder="100000" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                    </div>
+                  </div>
+                  <div class="filter-group" style="margin-bottom: 12px;">
+                    <label for="volume-input" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px;">Dung tích:</label>
+                    <input type="text" id="volume-input" placeholder="VD: 500ml, 330ml" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                  </div>
+                  <div style="display: flex; gap: 10px;">
+                    <button class="apply-advanced" style="flex: 1; padding: 10px; background-color: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Áp dụng</button>
+                    <button class="clear-advanced" style="flex: 1; padding: 10px; background-color: #f0f0f0; color: #333; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">Xóa</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+<!-- KẾT THÚC PHẦN THAY THẾ -->
             <div class="products-grid">
               <ul class="product-items"></ul>
             </div>
