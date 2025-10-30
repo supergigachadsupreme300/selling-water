@@ -277,19 +277,6 @@ function attachProductEvents() {
 window.switchPage = switchPage;
 window.loadCart = loadCart;
 
-// === THÊM VÀO CUỐI FILE script.js ===
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   // Gắn sự kiện cho tất cả nav-link
-//   document.querySelectorAll(".nav-link").forEach((link) => {
-//     link.addEventListener("click", (e) => {
-//       e.preventDefault();
-//       const pageId = link.dataset.page;
-//       switchPage(link, pageId);
-//     });
-//   });
-// });
-
 // code chuyển qua lại giữa trang chủ, sản phẩm, ...
 function switching_page(element, id) {
   const home_navigate = ["home", "products", "purchase", "account"];
