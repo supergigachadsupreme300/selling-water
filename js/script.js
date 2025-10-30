@@ -164,7 +164,9 @@ function switchPage(link, pageId) {
 function initProductsPage() {
   renderCategories();
   renderProducts();
-  setupSearch();
+  if (typeof setupSearch === "function") {
+    setupSearch(); // Gọi từ search.js
+  }
 }
 
 // Render danh mục
@@ -269,20 +271,6 @@ function attachProductEvents() {
       alert(`Đã thêm "${p.name}" vào giỏ!`);
     };
   });
-}
-
-// Tìm kiếm
-function setupSearch() {
-  const input = document.querySelector(".search-input");
-  const btn = document.querySelector(".search-btn");
-  const search = () => {
-    const q = input.value.trim();
-    const cat =
-      document.querySelector(".category-btn.active")?.dataset.cat || "Tất cả";
-    renderProducts(cat, q);
-  };
-  btn.onclick = search;
-  input.onkeypress = (e) => e.key === "Enter" && search();
 }
 
 // // Export
