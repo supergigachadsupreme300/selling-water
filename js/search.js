@@ -1,9 +1,14 @@
 // Khởi tạo trang sản phẩm
 function initProductsPage() {
   renderCategories();
-  renderProducts();
+  currentPage = 1; // ← Thêm dòng này
+  renderProducts("Tất cả", "", currentPage); // ← Gọi với trang 1
   setupSearch();
 }
+
+// Cấu hình phân trang: 8 sản phẩm mỗi trang
+const PRODUCTS_PER_PAGE = 8;
+let currentPage = 1;
 
 // Render danh mục
 function renderCategories() {
@@ -23,51 +28,76 @@ function renderCategories() {
 
   document.querySelectorAll(".category-btn").forEach((btn) => {
     btn.onclick = () => {
-      document
-        .querySelectorAll(".category-btn")
-        .forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".category-btn").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       const query = document.querySelector(".search-input").value.trim();
-      renderProducts(btn.dataset.cat, query);
+      currentPage = 1;
+      renderProducts(btn.dataset.cat, query, currentPage, {}); // Xóa bộ lọc nâng cao
     };
   });
 }
 
 // Render sản phẩm
-function renderProducts(filter = "Tất cả", search = "") {
+function renderProducts(filter = "Tất cả", search = "", page = 1, advancedFilters = {}) {
   const container = document.querySelector(".product-items");
+  const paginationContainer = document.querySelector(".pagination") || createPaginationContainer();
+
   let items = products;
-  if (filter !== "Tất cả") items = items.filter((p) => p.category === filter);
+
+  // 1. Lọc danh mục
+  if (filter !== "Tất cả") {
+    items = items.filter((p) => p.category === filter);
+  }
+
+  // 2. Lọc tìm kiếm (fuzzy)
   if (search) {
-    const q = search.toLowerCase();
-    items = items.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
+    items = items.filter(p =>
+      fuzzyMatch(search, p.name) || fuzzyMatch(search, p.description)
     );
   }
 
+  // 3. LỌC NÂNG CAO (mới)
+  if (advancedFilters.brand) {
+    items = items.filter(p => fuzzyMatch(advancedFilters.brand, p.brand));
+  }
+  if (advancedFilters.minPrice > 0) {
+    items = items.filter(p => p.price >= advancedFilters.minPrice);
+  }
+  if (advancedFilters.maxPrice < Infinity) {
+    items = items.filter(p => p.price <= advancedFilters.maxPrice);
+  }
+  if (advancedFilters.volume) {
+    items = items.filter(p => fuzzyMatch(advancedFilters.volume, p.volume));
+  }
+
+  // 4. Phân trang
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
+  const startIndex = (page - 1) * PRODUCTS_PER_PAGE;
+  const endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, totalItems);
+  const paginatedItems = items.slice(startIndex, endIndex);
+
+  currentPage = page > totalPages ? totalPages : page < 1 ? 1 : page;
+
+  // 5. Render sản phẩm
   container.innerHTML =
-    items.length === 0
-      ? `<p style="grid-column: 1/-1; text-align:center; color:#999;">Không tìm thấy sản phẩm.</p>`
-      : items
-          .map(
-            (p) => `
-      <li class="product-card" data-id="${p.id}">
-        <div class="product-thumb">
-          <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
-          <div class="thumb-circle"></div>
-        </div>
-        <div class="product-info">
-          <p class="product-title"><i class="fa-solid fa-star"></i> ${p.name} <i class="fa-solid fa-star"></i></p>
-          <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
-        </div>
-      </li>
-    `
-          )
-          .join("");
+    paginatedItems.length === 0
+      ? `<p style="grid-column: 1/-1; text-align:center; color:#999; padding: 20px;">Không tìm thấy sản phẩm nào phù hợp.</p>`
+      : paginatedItems.map(p => `
+        <li class="product-card" data-id="${p.id}">
+          <div class="product-thumb">
+            <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
+            <div class="thumb-circle"></div>
+          </div>
+          <div class="product-info">
+            <p class="product-title"><i class="fa-solid fa-star"></i> ${p.name} <i class="fa-solid fa-star"></i></p>
+            <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
+          </div>
+        </li>
+      `).join("");
 
   attachProductEvents();
+  renderPagination(totalPages, currentPage, filter, search, advancedFilters);
 }
 
 // Gắn sự kiện sản phẩm
@@ -101,7 +131,8 @@ function setupSearch() {
     const q = input.value.trim();
     const activeBtn = document.querySelector(".category-btn.active");
     const cat = activeBtn?.dataset.cat || "Tất cả";
-    renderProducts(cat, q);
+    currentPage = 1;
+    renderProducts(cat, q, currentPage, {}); // Reset bộ lọc nâng cao
   };
 
   btn.onclick = search;
@@ -195,51 +226,37 @@ function initAdvancedSearch() {
   };
 
   // Áp dụng bộ lọc
-  if (applyBtn) {
-    applyBtn.onclick = () => {
-      const search = document.querySelector('.search-input').value.trim();
-      const cat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
-      const brand = document.getElementById('brand-input').value.trim();
-      const minPrice = parseInt(document.getElementById('min-price').value) || 0;
-      const maxPrice = parseInt(document.getElementById('max-price').value) || Infinity;
-      const volume = document.getElementById('volume-input').value.trim();
+if (applyBtn) {
+  applyBtn.onclick = () => {
+  const search = document.querySelector('.search-input').value.trim();
+  const cat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
+  const brand = document.getElementById('brand-input').value.trim();
+  const minPrice = parseInt(document.getElementById('min-price').value) || 0;
+  const maxPrice = parseInt(document.getElementById('max-price').value) || Infinity;
+  const volume = document.getElementById('volume-input').value.trim();
 
-      let items = cat === 'Tất cả' ? products : products.filter(p => p.category === cat);
-      items = applyAdvancedFilters(items, { search, brand, minPrice, maxPrice, volume });
+  const advancedFilters = { brand, minPrice, maxPrice, volume };
 
-      const container = document.querySelector('.product-items');
-      if (items.length === 0) {
-        container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#999; padding: 20px;">Không tìm thấy sản phẩm nào phù hợp.</p>`;
-      } else {
-        container.innerHTML = items.map(p => `
-          <li class="product-card" data-id="${p.id}">
-            <div class="product-thumb">
-              <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
-              <div class="thumb-circle"></div>
-            </div>
-            <div class="product-info">
-              <p class="product-title"><i class="fa-solid fa-star"></i> ${p.name} <i class="fa-solid fa-star"></i></p>
-              <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
-            </div>
-          </li>
-        `).join('');
-        attachProductEvents();
-      }
-    };
-  }
+  currentPage = 1;
+  renderProducts(cat, search, currentPage, advancedFilters); // ĐÚNG 4 tham số
+};
+}
 
-  // Xóa bộ lọc
-  if (clearBtn) {
-    clearBtn.onclick = () => {
-      document.getElementById('brand-input').value = '';
-      document.getElementById('min-price').value = '';
-      document.getElementById('max-price').value = '';
-      document.getElementById('volume-input').value = '';
-      const activeCat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
-      const search = document.querySelector('.search-input').value.trim();
-      renderProducts(activeCat, search);
-    };
-  }
+// Xóa bộ lọc
+if (clearBtn) {
+  clearBtn.onclick = () => {
+    document.getElementById('brand-input').value = '';
+    document.getElementById('min-price').value = '';
+    document.getElementById('max-price').value = '';
+    document.getElementById('volume-input').value = '';
+
+    const activeCat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
+    const search = document.querySelector('.search-input').value.trim();
+
+    currentPage = 1;
+    renderProducts(activeCat, search, currentPage, {}); // Không có bộ lọc nâng cao
+  };
+}
 }
 
 // Tích hợp vào initProductsPage
@@ -253,41 +270,7 @@ if (typeof initProductsPage === 'function') {
 
 window.initAdvancedSearch = initAdvancedSearch;
 
-// ==================== KẾT THÚC CẬP NHẬT ====================function renderProducts(filter = "Tất cả", search = "") {
-  const container = document.querySelector(".product-items");
-  let items = products;
-  if (filter !== "Tất cả") items = items.filter((p) => p.category === filter);
-  if (search) {
-    const q = search.toLowerCase();
-    items = items.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
-    );
-  }
-
-  container.innerHTML =
-    items.length === 0
-      ? `<p style="grid-column: 1/-1; text-align:center; color:#999;">Không tìm thấy sản phẩm.</p>`
-      : items
-          .map(
-            (p) => `
-      <li class="product-card" data-id="${p.id}">
-        <div class="product-thumb">
-          <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
-          <div class="thumb-circle"></div>
-        </div>
-        <div class="product-info">
-          <p class="product-title"><i class="fa-solid fa-star"></i> ${p.name} <i class="fa-solid fa-star"></i></p>
-          <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
-        </div>
-      </li>
-    `
-          )
-          .join("");
-
-  attachProductEvents();
-}
+// ==================== KẾT THÚC CẬP NHẬT ====================
 
 // Gắn sự kiện sản phẩm
 function attachProductEvents() {
@@ -332,5 +315,82 @@ function setupSearch() {
   };
 }
 
+//container phân trang
+function createPaginationContainer() {
+  const main = document.querySelector(".products-main");
+  let pagination = main.querySelector(".pagination");
+  if (!pagination) {
+    pagination = document.createElement("div");
+    pagination.className = "pagination";
+    pagination.style.cssText = "margin-top: 30px; text-align: center;";
+    main.querySelector(".products-grid").after(pagination);
+  }
+  return pagination;
+}
+
+//thêm hàm chuyển trang và render phân trang
+function renderPagination(totalPages, currentPage, filter, search, advancedFilters = {}) {
+  const pagination = document.querySelector(".pagination");
+  if (totalPages <= 1) {
+    pagination.innerHTML = "";
+    return;
+  }
+
+  let html = `<div class="pagination-controls">`;
+
+  const buildOnClick = (page) => {
+    const filterStr = JSON.stringify(filter);
+    const searchStr = JSON.stringify(search);
+    const advStr = JSON.stringify(advancedFilters);
+    return `changePage(${page}, ${filterStr}, ${searchStr}, ${advStr})`;
+  };
+
+  // Nút Trước
+  html += `
+    <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" 
+            ${currentPage === 1 ? 'disabled' : `onclick="${buildOnClick(currentPage - 1)}"`}>
+      Trước
+    </button>
+  `;
+
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
+
+  if (startPage > 1) {
+    html += `<button class="page-btn" onclick="${buildOnClick(1)}">1</button>`;
+    if (startPage > 2) html += `<span class="page-dots">...</span>`;
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    html += `
+      <button class="page-btn ${i === currentPage ? 'active' : ''}" 
+              onclick="${buildOnClick(i)}">${i}</button>
+    `;
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) html += `<span class="page-dots">...</span>`;
+    html += `<button class="page-btn" onclick="${buildOnClick(totalPages)}">${totalPages}</button>`;
+  }
+
+  // Nút Sau
+  html += `
+    <button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" 
+            ${currentPage === totalPages ? 'disabled' : `onclick="${buildOnClick(currentPage + 1)}"`}>
+      Sau
+    </button>
+  `;
+
+  html += `</div>`;
+  pagination.innerHTML = html;
+}
+
+function changePage(page, filter, search, advancedFilters = {}) {
+  renderProducts(filter, search, page, advancedFilters);
+  document.querySelector(".products-main").scrollIntoView({ behavior: "smooth" });
+}
+
+
 // Export hàm để dùng ở nơi khác
 window.setupSearch = setupSearch;
+
