@@ -332,7 +332,43 @@ pre {
 .btn-buy:hover {
   background-color: #e0e050;
 }
+/* THÊM MỚI: Tìm kiếm nâng cao */
+.advanced-search-box {
+  transition: all 0.3s ease;
+}
 
+.toggle-advanced,
+.advanced-toggle-btn {
+  font-weight: 600 !important;
+}
+
+.advanced-toggle-btn:hover,
+.toggle-advanced:hover {
+  background-color: #f0f0f0 !important;
+}
+
+.advanced-filters {
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-group label {
+  font-size: 14px !important;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .filter-group[style*="flex"] {
+    flex-direction: column;
+  }
+  .advanced-search-box {
+    padding: 10px;
+  }
+}
 /* ========================================
    RESPONSIVE - THÊM VÀO CUỐI FILE style.css
    ======================================== */
