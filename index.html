@@ -632,11 +632,16 @@
               <button
                 type="button"
                 class="submit-button"
-                onclick="luuDuLieu(); hienThiDuLieu();"
+                onclick="luuDuLieu(); hienThiDuLieu(); savingAddress();"
               >
                 Lưu thông tin
               </button>
-              <button class="submit-button" onclick="logout()">
+              <button
+                class="submit-button"
+                id="logout-button"
+                onclick="logout()"
+              >
+                <i class="fa-solid fa-right-from-bracket"></i>
                 Đăng xuất
               </button>
             </div>

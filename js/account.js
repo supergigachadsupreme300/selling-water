@@ -127,7 +127,7 @@ function isLoggedIn() {
 function logout() {
   localStorage.removeItem("userName");
   localStorage.removeItem("password");
-  localStorage.removeItem("thongTinKhachHang"); // (tùy chọn)
+  // localStorage.removeItem("thongTinKhachHang"); // (tùy chọn)
 
   alert("Đã đăng xuất thành công!");
   switchToLogin();
@@ -136,4 +136,10 @@ function logout() {
   if (typeof updateCartButtonVisibility === "function") {
     updateCartButtonVisibility();
   }
+}
+
+function savingAddress() {
+  const data = JSON.parse(localStorage.getItem("thongTinKhachHang"));
+
+  document.getElementById("default-address").innerText = data.address;
 }
