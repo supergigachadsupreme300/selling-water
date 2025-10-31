@@ -40,7 +40,9 @@ function registerToLogin(event) {
   switchToLogin();
 }
 
-function Login() {
+function Login(event) {
+  event.preventDefault();
+
   const loginUserName = document.getElementById("loginUserName").value;
   const loginPassword = document.getElementById("loginPassword").value;
 
