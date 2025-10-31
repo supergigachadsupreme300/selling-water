@@ -112,7 +112,7 @@
   position: absolute;
   bottom: 130px;
   left: 70px;
-  display: block;
+  display: none;
 }
 
 .register-header {
@@ -166,7 +166,7 @@
   position: absolute;
   bottom: 130px;
   left: 70px;
-  display: none;
+  display: block;
 }
 
 .login-header {
