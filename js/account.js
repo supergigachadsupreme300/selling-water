@@ -100,10 +100,10 @@ window.onload = function () {
 };
 
 function updateAfterLogin() {
-  if (!isLoggedIn()) {  // DÙNG HÀM MỚI
+  if ((document.getElementById("accountForm").display = "none")) {
+    // DÙNG HÀM MỚI
     alert("Hãy đăng nhập trước khi mua hàng nhé!");
-    switchPage(document.querySelector('[data-page="account"]'), 'account');
-    return;
+    switchPage(document.querySelector('[data-page="account"]'), "account");
   }
 
   // Đã đăng nhập → mở thanh toán
@@ -112,13 +112,15 @@ function updateAfterLogin() {
   if (typeof renderCheckoutSummary === "function") renderCheckoutSummary();
 }
 
-
 /**
  * Kiểm tra người dùng đã đăng nhập chưa
  * @returns {boolean} true nếu đã đăng nhập
  */
 function isLoggedIn() {
-  return localStorage.getItem("userName") !== null && localStorage.getItem("password") !== null;
+  return (
+    localStorage.getItem("userName") !== null &&
+    localStorage.getItem("password") !== null
+  );
 }
 
 // THÊM HÀM ĐĂNG XUẤT
