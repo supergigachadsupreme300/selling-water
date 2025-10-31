@@ -100,13 +100,38 @@ window.onload = function () {
 };
 
 function updateAfterLogin() {
-  if ((document.getElementById("accountForm").style.display = "none")) {
+  if (!isLoggedIn()) {  // DÙNG HÀM MỚI
     alert("Hãy đăng nhập trước khi mua hàng nhé!");
-    // hãy chuyển qua trang tài khoản ở đây
-    //
-
-    //
-  } else {
+    switchPage(document.querySelector('[data-page="account"]'), 'account');
     return;
+  }
+
+  // Đã đăng nhập → mở thanh toán
+  document.querySelector(".cart-page").style.display = "none";
+  document.querySelector(".checkout-page").style.display = "block";
+  if (typeof renderCheckoutSummary === "function") renderCheckoutSummary();
+}
+
+
+/**
+ * Kiểm tra người dùng đã đăng nhập chưa
+ * @returns {boolean} true nếu đã đăng nhập
+ */
+function isLoggedIn() {
+  return localStorage.getItem("userName") !== null && localStorage.getItem("password") !== null;
+}
+
+// THÊM HÀM ĐĂNG XUẤT
+function logout() {
+  localStorage.removeItem("userName");
+  localStorage.removeItem("password");
+  localStorage.removeItem("thongTinKhachHang"); // (tùy chọn)
+
+  alert("Đã đăng xuất thành công!");
+  switchToLogin();
+
+  // Tự động cập nhật nút giỏ hàng (nếu bạn ẩn nó)
+  if (typeof updateCartButtonVisibility === "function") {
+    updateCartButtonVisibility();
   }
 }
