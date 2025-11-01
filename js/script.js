@@ -9,7 +9,7 @@ const products = [
     description: "Sinh tố dâu tây tươi mát, kết hợp sữa chua và đá xay mịn.",
     volume: "400ml",
     brand: "Tự làm",
-  },
+},
   {
     id: 2,
     name: "Cold Brew",
@@ -120,52 +120,59 @@ const products = [
     volume: "450ml",
     brand: "THP",
   },
-];
+]; 
 
 // Hàm addToCart toàn cục
 function addToCart(name, price, qty = 1) {
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const existing = cart.find((i) => i.name === name);
+  // BẮT BUỘC ĐĂNG NHẬP
+  if (!isLoggedIn()) {
+    alert("Vui lòng đăng nhập để thêm vào giỏ hàng!");
+    return;
+  }
+
+  const userName = localStorage.getItem("userName");
+  const cartKey = `cart_${userName}`; // Key riêng cho từng user
+
+  let cart = JSON.parse(localStorage.getItem(cartKey) || "[]");
+  const existing = cart.find(i => i.name === name);
   if (existing) {
     existing.qty += qty;
   } else {
     cart.push({ name, price, qty });
   }
-  localStorage.setItem("cart", JSON.stringify(cart));
+
+  localStorage.setItem(cartKey, JSON.stringify(cart));
   if (typeof renderCart === "function") renderCart();
 }
-
 // Chuyển trang
 // js/script.js – SỬA HÀM switchPage
-
+// Thêm vào đầu file script.js hoặc account.js
+function isLoggedIn() {
+  return (
+    localStorage.getItem("userName") !== null &&
+    localStorage.getItem("password") !== null
+  );
+}
 // js/script.js
 function switchPage(link, pageId) {
   const page = document.getElementById(pageId);
   if (!page) return console.error(`Trang #${pageId} không tồn tại!`);
 
-  // === KIỂM TRA ĐĂNG NHẬP KHI VÀO GIỎ HÀNG ===
-  // js/script.js – CHỈ SỬA PHẦN NÀY TRONG HÀM switchPage
-
+  // === CHẶN TRUY CẬP GIỎ HÀNG NẾU CHƯA ĐĂNG NHẬP ===
   if (pageId === "purchase") {
     if (!isLoggedIn()) {
-      // DÙNG HÀM MỚI
       alert("Vui lòng đăng nhập để xem giỏ hàng!");
-      switchPage(document.querySelector('[data-page="account"]'), "account");
+      switchPage(document.querySelector('[data-page="account"]'), 'account');
       return;
     }
   }
-  // ======================================
 
   // Ẩn tất cả trang
-  document
-    .querySelectorAll(".page-section")
-    .forEach((p) => (p.style.display = "none"));
+  document.querySelectorAll(".page-section").forEach(p => p.style.display = "none");
   page.style.display = "block";
 
   // Active menu
-  document
-    .querySelectorAll(".nav-link")
-    .forEach((l) => l.classList.remove("active"));
+  document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
   if (link) link.classList.add("active");
 
   // Khởi tạo nội dung trang
@@ -174,21 +181,16 @@ function switchPage(link, pageId) {
   if (pageId === "donhang") showDonHangPage();
 }
 
-// // Export
+// Export toàn cục
 window.switchPage = switchPage;
-window.loadCart = loadCart;
+window.isLoggedIn = isLoggedIn;  // Đảm bảo hàm có thể dùng ở nơi khác
 
-// code chuyển qua lại giữa trang chủ, sản phẩm, ...
-function switching_page(element, id) {
-  const home_navigate = ["home", "products", "purchase", "account"];
-  home_navigate.forEach(function (content) {
-    document.getElementById(content).style.display = "none";
-  });
-  document.getElementById(id).style.display = "block";
-
-  const buttons = document.querySelectorAll(".menu-button");
-  buttons.forEach(function (button) {
-    button.classList.remove("active");
-  });
-  element.classList.add("active");
-}
+// Kiểm tra khi load trang
+document.addEventListener('DOMContentLoaded', () => {
+  const currentHash = window.location.hash.slice(1);
+  if (currentHash === 'purchase' && !isLoggedIn()) {
+    alert("Vui lòng đăng nhập để xem giỏ hàng!");
+    window.location.hash = '#account';
+    switchPage(document.querySelector('[data-page="account"]'), 'account');
+  }
+});
