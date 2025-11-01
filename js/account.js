@@ -52,44 +52,63 @@ function Login(event) {
   if (userName === loginUserName && loginPassword === password) {
     alert("Đăng nhập thành công!");
     switchToAccount();
+    
+    // THAY ĐỔI 6: TẢI DỮ LIỆU CỦA USER SAU KHI ĐĂNG NHẬP
+    hienThiDuLieu();
   } else {
     alert("Tên đăng nhập hoặc mật khẩu không đúng!");
   }
 }
 
 function luuDuLieu() {
-  // LẤY DỮ LIỆU CŨ (để giữ lại mảng orders)
-  const existingData = JSON.parse(localStorage.getItem("thongTinKhachHang")) || {};
+  // THAY ĐỔI 1: Lấy userName để phân biệt dữ liệu từng người
+  const userName = localStorage.getItem("userName");
+  if (!userName) {
+    alert("Vui lòng đăng nhập!");
+    return;
+  }
 
-  // CẬP NHẬT CHỈ CÁC TRƯỜNG MỚI, GIỮ NGUYÊN orders
+  // THAY ĐỔI 2: Dùng key riêng cho từng user: user_nguyenvana
+  const key = `user_${userName}`;
+  const existingData = JSON.parse(localStorage.getItem(key)) || { orders: [] };
+
   const data = {
-    ...existingData,  // ← QUAN TRỌNG: Giữ lại orders và các dữ liệu khác
+    ...existingData,
     name: document.getElementById("customer-name").value,
     phone: document.getElementById("customer-phone").value,
     DOB: document.getElementById("customer-DOB").value,
-    userName: localStorage.getElementById("userName"),
+    userName: userName, // Gán lại để đảm bảo
     email: document.getElementById("customer-email").value,
     address: document.getElementById("customer-address").value,
   };
 
+  // THAY ĐỔI 3: Lưu vào key riêng, không ghi đè chung
+  localStorage.setItem(key, JSON.stringify(data));
   alert("Lưu dữ liệu thành công!");
-
-  // Lưu lại toàn bộ (giờ có cả orders)
-  localStorage.setItem("thongTinKhachHang", JSON.stringify(data));
 }
 
 function hienThiDuLieu() {
-  const data = JSON.parse(localStorage.getItem("thongTinKhachHang"));
+  // THAY ĐỔI 4: Chỉ hiển thị dữ liệu của user đang đăng nhập
+  const userName = localStorage.getItem("userName");
+  if (!userName) return;
+
+  const key = `user_${userName}`;
+  const data = JSON.parse(localStorage.getItem(key));
 
   if (!data) return;
 
-  document.getElementById("customer-name").value = data.name;
-  document.getElementById("customer-phone").value = data.phone;
-  document.getElementById("customer-DOB").value = data.DOB;
-  document.getElementById("customer-user-name").value = data.userName;
-  document.getElementById("customer-email").value = data.email;
-  document.getElementById("customer-address").value = data.address;
+  document.getElementById("customer-name").value = data.name || "";
+  document.getElementById("customer-phone").value = data.phone || "";
+  document.getElementById("customer-DOB").value = data.DOB || "";
+  document.getElementById("customer-user-name").value = data.userName || "";
+  document.getElementById("customer-email").value = data.email || "";
+  document.getElementById("customer-address").value = data.address || "";
 }
+
+// THAY ĐỔI 5: Gọi hienThiDuLieu() thay vì đọc chung
+window.onload = function () {
+  hienThiDuLieu(); // Đảm bảo chỉ load dữ liệu của user hiện tại
+};
 
 window.onload = function () {
   const data = JSON.parse(localStorage.getItem("thongTinKhachHang"));
@@ -128,20 +147,16 @@ function isLoggedIn() {
 }
 
 // THÊM HÀM ĐĂNG XUẤT
-function logout() {
-  localStorage.removeItem("userName");
-  localStorage.removeItem("password");
-  // localStorage.removeItem("thongTinKhachHang"); // (tùy chọn)
+function updateDefaultAddress() {
+  // THAY ĐỔI 10: Hiển thị địa chỉ của user hiện tại
+  const userName = localStorage.getItem("userName");
+  const defaultAddrEl = document.getElementById("default-address");
+  if (!userName || !defaultAddrEl) return;
 
-  alert("Đã đăng xuất thành công!");
-  switchToLogin();
-
-  // Tự động cập nhật nút giỏ hàng (nếu bạn ẩn nó)
-  if (typeof updateCartButtonVisibility === "function") {
-    updateCartButtonVisibility();
-  }
+  const key = `user_${userName}`;
+  const data = JSON.parse(localStorage.getItem(key));
+  defaultAddrEl.textContent = data?.address ? data.address : "Vui lòng nhập địa chỉ trong phần Tài khoản.";
 }
-
 function savingAddress() {
   const data = JSON.parse(localStorage.getItem("thongTinKhachHang"));
 
@@ -164,9 +179,18 @@ function backToAccount() {
 
 // Render danh sách đơn hàng
 function renderOrderHistory() {
-  const data = JSON.parse(localStorage.getItem("thongTinKhachHang"));
+  // THAY ĐỔI 7: Kiểm tra đăng nhập + dùng key riêng
+  const userName = localStorage.getItem("userName");
+  if (!userName) {
+    document.getElementById("order-history").innerHTML = '<p>Bạn cần đăng nhập.</p>';
+    return;
+  }
+
+  const key = `user_${userName}`;
+  const data = JSON.parse(localStorage.getItem(key));
   const historyContainer = document.getElementById("order-history");
-  if (!historyContainer || !data || !data.orders || data.orders.length === 0) {
+
+  if (!data || !data.orders || data.orders.length === 0) {
     historyContainer.innerHTML = '<p style="text-align:center; color:#999;">Chưa có đơn hàng nào.</p>';
     return;
   }
