@@ -4,7 +4,17 @@ function renderCart() {
   const totalEl = document.getElementById('total-price');
   if (!list || !totalEl) return;
 
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  // LẤY USER ĐỂ ĐỌC GIỎ HÀNG RIÊNG
+  const userName = localStorage.getItem("userName");
+  if (!userName) {
+    list.innerHTML = '<p class="cart-empty">Vui lòng đăng nhập để xem giỏ hàng.</p>';
+    totalEl.textContent = '0 VNĐ';
+    return;
+  }
+
+  const cartKey = `cart_${userName}`;
+  const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+
   list.innerHTML = cart.length === 0 ? '<p class="cart-empty">Giỏ hàng trống.</p>' : '';
   let total = 0;
 
@@ -30,13 +40,17 @@ function renderCart() {
 }
 
 function attachCartEvents() {
+  const userName = localStorage.getItem("userName");
+  if (!userName) return;
+  const cartKey = `cart_${userName}`;
+
   document.querySelectorAll('.remove-btn').forEach(btn => {
     btn.onclick = () => {
       const row = btn.closest('.cart-row');
       const name = row.querySelector('.item-name').textContent;
-      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
       cart = cart.filter(i => i.name !== name);
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem(cartKey, JSON.stringify(cart));
       renderCart();
     };
   });
@@ -46,16 +60,17 @@ function attachCartEvents() {
       const row = btn.closest('.cart-row');
       const name = row.querySelector('.item-name').textContent;
       const isInc = btn.classList.contains('increase');
-      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
       const item = cart.find(i => i.name === name);
       if (item) {
         item.qty = isInc ? item.qty + 1 : (item.qty > 1 ? item.qty - 1 : 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem(cartKey, JSON.stringify(cart));
         renderCart();
       }
     };
   });
 }
+
 
 function loadCart() {
   renderCart();
