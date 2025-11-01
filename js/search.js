@@ -326,6 +326,7 @@ function renderPagination(
 
   const buildOnClick = (page) => `changePage(${page})`;
 
+
   // Nút Trước
   if (currentPage > 1) {
     html += `<button class="page-btn" onclick="${buildOnClick(
