@@ -213,6 +213,60 @@
   margin-left: 400px;
 }
 
+
+#order-history {
+  margin-top: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+  background: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 15px;
+}
+
+.order-item {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.order-item h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #2c3e50;
+  font-family: "Oswald", sans-serif;
+}
+
+.order-item h3 small {
+  font-weight: normal;
+  color: #7f8c8d;
+}
+
+.order-items {
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #ddd;
+  padding-bottom: 8px;
+}
+
+.order-items > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 15px;
+}
+
+.order-item p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #34495e;
+}
+
+.order-item p strong {
+  color: #2c3e50;
+}
 /* ========================================
 RESPONSIVE - THÊM VÀO CUỐI FILE account.css
 ======================================== */
