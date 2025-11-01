@@ -61,12 +61,21 @@ document.querySelector(".btn-confirm").onclick = () => {
 
   const paymentText = { cash: "Tiền mặt", bank: "Chuyển khoản", online: "Trực tuyến" }[payment];
 
-  // === LƯU ĐƠN HÀNG ===
-  localStorage.setItem('lastOrder', JSON.stringify({
+  // === LƯU ĐƠN HÀNG VÀO LỊCH SỬ ===
+  const order = {
     items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty || 1 })),
     payment: paymentText,
-    address: address
-  }));
+    address: address,
+    date: new Date().toLocaleString('vi-VN')
+  };
+
+  let userOrders = userData.orders || [];
+  userOrders.push(order);
+  userData.orders = userOrders;
+  localStorage.setItem('thongTinKhachHang', JSON.stringify(userData));
+
+  // Lưu lastOrder cho trang donhang nếu cần
+  localStorage.setItem('lastOrder', JSON.stringify(order));
 
   alert(`Đơn hàng thành công!\nTổng: ${cart.reduce((s, i) => s + i.price * (i.qty || 1), 0).toLocaleString()} VNĐ`);
 
