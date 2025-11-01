@@ -283,17 +283,26 @@
             <!-- KẾT THÚC PHẦN NÂNG CAO -->
             <div class="products-grid">
               <ul class="product-items"></ul>
+
               <div
                 class="pagination"
                 style="margin-top: 30px; text-align: center"
               ></div>
+
+              <div
+                class="pagination"
+                style="margin-top: 30px; text-align: center"
+              ></div>
+              <!-- phân trang -->
             </div>
+
             <div
               id="product-detail"
               class="detail-container"
               style="display: none"
             ></div>
             <!-- phân trang -->
+            <div class="pagination-controls" style="display: none"></div>
           </main>
         </div>
       </div>
@@ -632,7 +641,14 @@
               <button
                 type="button"
                 class="submit-button"
-                onclick="luuDuLieu(); hienThiDuLieu(); savingAddress();"
+                onclick="showOrderHistory()"
+              >
+                Xem lịch sử đơn hàng
+              </button>
+              <button
+                type="button"
+                class="submit-button"
+                onclick="luuDuLieu(); hienThiDuLieu();"
               >
                 Lưu thông tin
               </button>
@@ -646,20 +662,58 @@
               </button>
             </div>
           </form>
+          <!-- LỊCH SỬ ĐƠN HÀNG -->
+
+          <div
+            id="order-history"
+            style="
+              display: none;
+              margin-top: 20px;
+              width: 100%;
+              max-height: 500px;
+              overflow-y: auto;
+              background: #f9f9f9;
+              border-radius: 10px;
+              border: 1px solid #ddd;
+              padding: 15px;
+            "
+          >
+            <!-- Nội dung sẽ được render bằng JS -->
+          </div>
+          <div
+            class="order-history-section"
+            style="display: none; margin-top: 30px"
+          >
+            <h3
+              style="
+                font-family: 'Signika', sans-serif;
+                font-size: 24px;
+                margin-bottom: 15px;
+              "
+            >
+              Lịch sử đơn hàng
+            </h3>
+            <div id="order-history-list">
+              <p style="color: #666; text-align: center">
+                Chưa có đơn hàng nào.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-
+      z
       <footer class="site-footer"></footer>
     </div>
 
+    <!-- SCRIPTS -->
     <!-- SCRIPTS -->
     <script src="js/cart.js"></script>
     <script src="js/script.js"></script>
     <script src="js/search.js"></script>
     <script src="js/itemdetail.js"></script>
-    <!-- THÊM LẠI -->
     <script src="js/purchase.js"></script>
     <script src="js/donhang.js"></script>
+    <!-- ĐẢM BẢO TẢI TRƯỚC script.js -->
     <script src="js/account.js"></script>
 
     <script>
