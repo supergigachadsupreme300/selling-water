@@ -89,9 +89,16 @@
 }
 
 .submit-button-holder {
-  margin-top: 200px;
-  margin-left: 43%;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;    /* DỒN SÁT BÊN PHẢI */
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  width: 100%;
+  padding-right: 20px;          /* Tùy chọn: cách mép phải 20px */
 }
+
 
 .submit-button {
   height: 50px;
