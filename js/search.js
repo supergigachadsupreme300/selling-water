@@ -327,18 +327,6 @@ function renderPagination(
   const buildOnClick = (page) => `changePage(${page})`;
 
   // Nút Trước
-  html += `
-    <button class="page-btn ${currentPage === 1 ? "disabled" : ""}" 
-            ${
-              currentPage === 1
-                ? "disabled"
-                : `onclick="${buildOnClick(currentPage - 1)}"`
-            }>
-      Trước
-    </button>
-  `;
-
-  // Nút Trước
   if (currentPage > 1) {
     html += `<button class="page-btn" onclick="${buildOnClick(
       currentPage - 1
@@ -370,17 +358,6 @@ function renderPagination(
   }
 
   // Nút Sau
-
-  html += `
-    <button class="page-btn ${currentPage === totalPages ? "disabled" : ""}" 
-            ${
-              currentPage === totalPages
-                ? "disabled"
-                : `onclick="${buildOnClick(currentPage + 1)}"`
-            }>
-      Sau
-    </button>
-  `;
 
   if (currentPage < totalPages) {
     html += `<button class="page-btn" onclick="${buildOnClick(
