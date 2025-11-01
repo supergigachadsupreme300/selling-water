@@ -9,7 +9,7 @@ const products = [
     description: "Sinh tố dâu tây tươi mát, kết hợp sữa chua và đá xay mịn.",
     volume: "400ml",
     brand: "Tự làm",
-},
+  },
   {
     id: 2,
     name: "Cold Brew",
@@ -120,7 +120,7 @@ const products = [
     volume: "450ml",
     brand: "THP",
   },
-]; 
+];
 
 // Hàm addToCart toàn cục
 function addToCart(name, price, qty = 1) {
@@ -146,21 +146,26 @@ function switchPage(link, pageId) {
   // === KIỂM TRA ĐĂNG NHẬP KHI VÀO GIỎ HÀNG ===
   // js/script.js – CHỈ SỬA PHẦN NÀY TRONG HÀM switchPage
 
-if (pageId === "purchase") {
-  if (!isLoggedIn()) {  // DÙNG HÀM MỚI
-    alert("Vui lòng đăng nhập để xem giỏ hàng!");
-    switchPage(document.querySelector('[data-page="account"]'), 'account');
-    return;
+  if (pageId === "purchase") {
+    if (!isLoggedIn()) {
+      // DÙNG HÀM MỚI
+      alert("Vui lòng đăng nhập để xem giỏ hàng!");
+      switchPage(document.querySelector('[data-page="account"]'), "account");
+      return;
+    }
   }
-}
   // ======================================
 
   // Ẩn tất cả trang
-  document.querySelectorAll(".page-section").forEach(p => p.style.display = "none");
+  document
+    .querySelectorAll(".page-section")
+    .forEach((p) => (p.style.display = "none"));
   page.style.display = "block";
 
   // Active menu
-  document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+  document
+    .querySelectorAll(".nav-link")
+    .forEach((l) => l.classList.remove("active"));
   if (link) link.classList.add("active");
 
   // Khởi tạo nội dung trang

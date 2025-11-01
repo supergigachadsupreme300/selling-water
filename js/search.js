@@ -28,7 +28,9 @@ function renderCategories() {
 
   document.querySelectorAll(".category-btn").forEach((btn) => {
     btn.onclick = () => {
-      document.querySelectorAll(".category-btn").forEach((b) => b.classList.remove("active"));
+      document
+        .querySelectorAll(".category-btn")
+        .forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       const query = document.querySelector(".search-input").value.trim();
       currentPage = 1;
@@ -38,9 +40,15 @@ function renderCategories() {
 }
 
 // Render sản phẩm
-function renderProducts(filter = "Tất cả", search = "", page = 1, advancedFilters = {}) {
+function renderProducts(
+  filter = "Tất cả",
+  search = "",
+  page = 1,
+  advancedFilters = {}
+) {
   const container = document.querySelector(".product-items");
-  const paginationContainer = document.querySelector(".pagination") || createPaginationContainer();
+  const paginationContainer =
+    document.querySelector(".pagination") || createPaginationContainer();
 
   let items = products;
 
@@ -51,23 +59,23 @@ function renderProducts(filter = "Tất cả", search = "", page = 1, advancedFi
 
   // 2. Lọc tìm kiếm (fuzzy)
   if (search) {
-    items = items.filter(p =>
-      fuzzyMatch(search, p.name) || fuzzyMatch(search, p.description)
+    items = items.filter(
+      (p) => fuzzyMatch(search, p.name) || fuzzyMatch(search, p.description)
     );
   }
 
   // 3. LỌC NÂNG CAO (mới)
   if (advancedFilters.brand) {
-    items = items.filter(p => fuzzyMatch(advancedFilters.brand, p.brand));
+    items = items.filter((p) => fuzzyMatch(advancedFilters.brand, p.brand));
   }
   if (advancedFilters.minPrice > 0) {
-    items = items.filter(p => p.price >= advancedFilters.minPrice);
+    items = items.filter((p) => p.price >= advancedFilters.minPrice);
   }
   if (advancedFilters.maxPrice < Infinity) {
-    items = items.filter(p => p.price <= advancedFilters.maxPrice);
+    items = items.filter((p) => p.price <= advancedFilters.maxPrice);
   }
   if (advancedFilters.volume) {
-    items = items.filter(p => fuzzyMatch(advancedFilters.volume, p.volume));
+    items = items.filter((p) => fuzzyMatch(advancedFilters.volume, p.volume));
   }
 
   // 4. Phân trang
@@ -83,7 +91,9 @@ function renderProducts(filter = "Tất cả", search = "", page = 1, advancedFi
   container.innerHTML =
     paginatedItems.length === 0
       ? `<p style="grid-column: 1/-1; text-align:center; color:#999; padding: 20px;">Không tìm thấy sản phẩm nào phù hợp.</p>`
-      : paginatedItems.map(p => `
+      : paginatedItems
+          .map(
+            (p) => `
         <li class="product-card" data-id="${p.id}">
           <div class="product-thumb">
             <img src="${p.image}" alt="${p.name}" onerror="this.src='img/product/default.png'">
@@ -94,7 +104,9 @@ function renderProducts(filter = "Tất cả", search = "", page = 1, advancedFi
             <button class="btn-buy" data-id="${p.id}">Mua ngay</button>
           </div>
         </li>
-      `).join("");
+      `
+          )
+          .join("");
 
   attachProductEvents();
   renderPagination(totalPages, currentPage, filter, search, advancedFilters);
@@ -152,7 +164,9 @@ window.setupSearch = setupSearch;
 
 // Hàm tính khoảng cách Levenshtein (fuzzy search)
 function levenshteinDistance(a, b) {
-  const matrix = Array(b.length + 1).fill().map(() => Array(a.length + 1).fill(0));
+  const matrix = Array(b.length + 1)
+    .fill()
+    .map(() => Array(a.length + 1).fill(0));
   for (let i = 0; i <= b.length; i++) matrix[i][0] = i;
   for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
   for (let i = 1; i <= b.length; i++) {
@@ -184,26 +198,27 @@ function applyAdvancedFilters(items, filters) {
   let filtered = [...items];
 
   if (filters.search) {
-    filtered = filtered.filter(p =>
-      fuzzyMatch(filters.search, p.name) ||
-      fuzzyMatch(filters.search, p.description)
+    filtered = filtered.filter(
+      (p) =>
+        fuzzyMatch(filters.search, p.name) ||
+        fuzzyMatch(filters.search, p.description)
     );
   }
 
   if (filters.brand) {
-    filtered = filtered.filter(p => fuzzyMatch(filters.brand, p.brand));
+    filtered = filtered.filter((p) => fuzzyMatch(filters.brand, p.brand));
   }
 
   if (filters.minPrice > 0) {
-    filtered = filtered.filter(p => p.price >= filters.minPrice);
+    filtered = filtered.filter((p) => p.price >= filters.minPrice);
   }
 
   if (filters.maxPrice < Infinity) {
-    filtered = filtered.filter(p => p.price <= filters.maxPrice);
+    filtered = filtered.filter((p) => p.price <= filters.maxPrice);
   }
 
   if (filters.volume) {
-    filtered = filtered.filter(p => fuzzyMatch(filters.volume, p.volume));
+    filtered = filtered.filter((p) => fuzzyMatch(filters.volume, p.volume));
   }
 
   return filtered;
@@ -211,58 +226,62 @@ function applyAdvancedFilters(items, filters) {
 
 // Khởi tạo tìm kiếm nâng cao
 function initAdvancedSearch() {
-  const toggleBtn = document.querySelector('.advanced-toggle-btn');
-  const advancedBox = document.querySelector('.advanced-search-box');
-  const applyBtn = document.querySelector('.apply-advanced');
-  const clearBtn = document.querySelector('.clear-advanced');
+  const toggleBtn = document.querySelector(".advanced-toggle-btn");
+  const advancedBox = document.querySelector(".advanced-search-box");
+  const applyBtn = document.querySelector(".apply-advanced");
+  const clearBtn = document.querySelector(".clear-advanced");
 
   if (!toggleBtn || !advancedBox) return;
 
   // Nhấn "+ Nâng cao" → mở toàn bộ form ngay
   toggleBtn.onclick = () => {
-    const isHidden = advancedBox.style.display === 'none';
-    advancedBox.style.display = isHidden ? 'block' : 'none';
-    toggleBtn.textContent = isHidden ? '− Thu gọn' : '+ Nâng cao';
+    const isHidden = advancedBox.style.display === "none";
+    advancedBox.style.display = isHidden ? "block" : "none";
+    toggleBtn.textContent = isHidden ? "− Thu gọn" : "+ Nâng cao";
   };
 
   // Áp dụng bộ lọc
-if (applyBtn) {
-  applyBtn.onclick = () => {
-  const search = document.querySelector('.search-input').value.trim();
-  const cat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
-  const brand = document.getElementById('brand-input').value.trim();
-  const minPrice = parseInt(document.getElementById('min-price').value) || 0;
-  const maxPrice = parseInt(document.getElementById('max-price').value) || Infinity;
-  const volume = document.getElementById('volume-input').value.trim();
+  if (applyBtn) {
+    applyBtn.onclick = () => {
+      const search = document.querySelector(".search-input").value.trim();
+      const cat =
+        document.querySelector(".category-btn.active")?.dataset.cat || "Tất cả";
+      const brand = document.getElementById("brand-input").value.trim();
+      const minPrice =
+        parseInt(document.getElementById("min-price").value) || 0;
+      const maxPrice =
+        parseInt(document.getElementById("max-price").value) || Infinity;
+      const volume = document.getElementById("volume-input").value.trim();
 
-  const advancedFilters = { brand, minPrice, maxPrice, volume };
+      const advancedFilters = { brand, minPrice, maxPrice, volume };
 
-  currentPage = 1;
-  renderProducts(cat, search, currentPage, advancedFilters); // ĐÚNG 4 tham số
-};
-}
+      currentPage = 1;
+      renderProducts(cat, search, currentPage, advancedFilters); // ĐÚNG 4 tham số
+    };
+  }
 
-// Xóa bộ lọc
-if (clearBtn) {
-  clearBtn.onclick = () => {
-    document.getElementById('brand-input').value = '';
-    document.getElementById('min-price').value = '';
-    document.getElementById('max-price').value = '';
-    document.getElementById('volume-input').value = '';
+  // Xóa bộ lọc
+  if (clearBtn) {
+    clearBtn.onclick = () => {
+      document.getElementById("brand-input").value = "";
+      document.getElementById("min-price").value = "";
+      document.getElementById("max-price").value = "";
+      document.getElementById("volume-input").value = "";
 
-    const activeCat = document.querySelector('.category-btn.active')?.dataset.cat || 'Tất cả';
-    const search = document.querySelector('.search-input').value.trim();
+      const activeCat =
+        document.querySelector(".category-btn.active")?.dataset.cat || "Tất cả";
+      const search = document.querySelector(".search-input").value.trim();
 
-    currentPage = 1;
-    renderProducts(activeCat, search, currentPage, {}); // Không có bộ lọc nâng cao
-  };
-}
+      currentPage = 1;
+      renderProducts(activeCat, search, currentPage, {}); // Không có bộ lọc nâng cao
+    };
+  }
 }
 
 // Tích hợp vào initProductsPage
-if (typeof initProductsPage === 'function') {
+if (typeof initProductsPage === "function") {
   const originalInit = initProductsPage;
-  initProductsPage = function() {
+  initProductsPage = function () {
     originalInit();
     initAdvancedSearch();
   };
@@ -329,7 +348,13 @@ function createPaginationContainer() {
 }
 
 //thêm hàm chuyển trang và render phân trang
-function renderPagination(totalPages, currentPage, filter, search, advancedFilters = {}) {
+function renderPagination(
+  totalPages,
+  currentPage,
+  filter,
+  search,
+  advancedFilters = {}
+) {
   const pagination = document.querySelector(".pagination");
   if (totalPages <= 1) {
     pagination.innerHTML = "";
@@ -347,8 +372,12 @@ function renderPagination(totalPages, currentPage, filter, search, advancedFilte
 
   // Nút Trước
   html += `
-    <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" 
-            ${currentPage === 1 ? 'disabled' : `onclick="${buildOnClick(currentPage - 1)}"`}>
+    <button class="page-btn ${currentPage === 1 ? "disabled" : ""}" 
+            ${
+              currentPage === 1
+                ? "disabled"
+                : `onclick="${buildOnClick(currentPage - 1)}"`
+            }>
       Trước
     </button>
   `;
@@ -363,20 +392,26 @@ function renderPagination(totalPages, currentPage, filter, search, advancedFilte
 
   for (let i = startPage; i <= endPage; i++) {
     html += `
-      <button class="page-btn ${i === currentPage ? 'active' : ''}" 
+      <button class="page-btn ${i === currentPage ? "active" : ""}" 
               onclick="${buildOnClick(i)}">${i}</button>
     `;
   }
 
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) html += `<span class="page-dots">...</span>`;
-    html += `<button class="page-btn" onclick="${buildOnClick(totalPages)}">${totalPages}</button>`;
+    html += `<button class="page-btn" onclick="${buildOnClick(
+      totalPages
+    )}">${totalPages}</button>`;
   }
 
   // Nút Sau
   html += `
-    <button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" 
-            ${currentPage === totalPages ? 'disabled' : `onclick="${buildOnClick(currentPage + 1)}"`}>
+    <button class="page-btn ${currentPage === totalPages ? "disabled" : ""}" 
+            ${
+              currentPage === totalPages
+                ? "disabled"
+                : `onclick="${buildOnClick(currentPage + 1)}"`
+            }>
       Sau
     </button>
   `;
@@ -387,10 +422,10 @@ function renderPagination(totalPages, currentPage, filter, search, advancedFilte
 
 function changePage(page, filter, search, advancedFilters = {}) {
   renderProducts(filter, search, page, advancedFilters);
-  document.querySelector(".products-main").scrollIntoView({ behavior: "smooth" });
+  document
+    .querySelector(".products-main")
+    .scrollIntoView({ behavior: "smooth" });
 }
-
 
 // Export hàm để dùng ở nơi khác
 window.setupSearch = setupSearch;
-
